@@ -41,16 +41,16 @@ Transform your holiday greetings into a enchanting digital experience! This Reac
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/christmas-wish-creator.git
+git clone https://github.com/sandushiUmayanga1916/Christmas-AI-Video-Generator.git
 
 # Navigate to project directory
-cd christmas-wish-creator
+cd Frontend
 
 # Install dependencies
 npm install
 
 # Start the magical journey
-npm start
+npm run dev
 ```
 
 ### 📸 Screenshot Preview
