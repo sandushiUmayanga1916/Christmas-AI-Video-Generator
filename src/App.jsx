@@ -1,7 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from "react";
 import Snowfall from "react-snowfall";
-import { Camera, Upload, Trash2, Info } from "lucide-react";
+import { Camera, Upload, Trash2, Info, ArrowLeft, CheckCircle2, Circle } from "lucide-react";
+
 
 const App = () => {
   const [formStage, setFormStage] = useState('initial');
@@ -56,6 +57,33 @@ const App = () => {
       "https://via.placeholder.com/150?text=Female+Template+4",
       "https://via.placeholder.com/150?text=Female+Template+5",
     ],
+  };
+
+  const [robotVerification, setRobotVerification] = useState({
+    challenge: null,
+    userResponse: null,
+    isVerified: false
+  });
+
+  // Robot verification challenge generation
+  const generateRobotChallenge = () => {
+    const operators = ['+', '-', '*'];
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const operator = operators[Math.floor(Math.random() * operators.length)];
+    
+    let correctAnswer;
+    switch (operator) {
+      case '+': correctAnswer = num1 + num2; break;
+      case '-': correctAnswer = num1 - num2; break;
+      case '*': correctAnswer = num1 * num2; break;
+      default: correctAnswer = num1 + num2;
+    }
+
+    return {
+      question: `${num1} ${operator} ${num2} = ?`,
+      correctAnswer: correctAnswer
+    };
   };
 
   const handleInitialChange = (e) => {
@@ -123,6 +151,64 @@ const App = () => {
       reader.readAsDataURL(file);
     });
   };
+  useEffect(() => {
+    if (formStage === 'details') {
+      setRobotVerification({
+        challenge: generateRobotChallenge(),
+        userResponse: null,
+        isVerified: false
+      });
+    }
+  }, [formStage]);
+
+  const handleRobotVerificationChange = (e) => {
+    const userAnswer = parseInt(e.target.value);
+    
+    setRobotVerification(prev => ({
+      ...prev,
+      userResponse: userAnswer,
+      isVerified: userAnswer === prev.challenge.correctAnswer
+    }));
+  };
+
+  const renderRobotVerification = () => {
+    if (!robotVerification.challenge) return null;
+
+    return (
+      <div className="mt-6 bg-gray-700 rounded-lg p-4">
+        <label className="block text-base font-medium text-purple-300 mb-2">
+          Robot Verification
+        </label>
+        <div className="flex items-center space-x-4">
+          <div className="flex-grow">
+            <p className="text-purple-400 mb-2">
+              Solve this simple math problem to verify you&apos;re not a robot:
+            </p>
+            <div className="flex items-center">
+              <div className="bg-gray-600 px-4 py-2 rounded-lg mr-4 text-purple-200">
+                {robotVerification.challenge.question}
+              </div>
+              <input
+                type="number"
+                value={robotVerification.userResponse || ''}
+                onChange={handleRobotVerificationChange}
+                className="w-24 p-2 rounded-lg bg-gray-800 text-purple-200 border-2 border-transparent focus:border-purple-500"
+                placeholder="Your answer"
+              />
+              {robotVerification.userResponse !== null && (
+                robotVerification.isVerified ? (
+                  <CheckCircle2 className="ml-2 text-green-500" />
+                ) : (
+                  <Circle className="ml-2 text-red-500" />
+                )
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
@@ -388,7 +474,24 @@ const App = () => {
     switch (formStage) {
       case 'details':
         return (
-          <form onSubmit={handleInitialSubmit} className="space-y-6">
+          <form 
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (robotVerification.isVerified) {
+              handleInitialSubmit(e);
+            } else {
+              setError("Please complete the robot verification.");
+            }
+          }} 
+          className="space-y-6 relative"
+        >
+             <button
+              type="button"
+              onClick={() => setFormStage('initial')}
+              className="absolute -top-36 -left-7 flex items-center text-violet-400 hover:text-purple-300 m-6 font-bold "
+            >
+              <ArrowLeft className="mr-2" />
+            </button>
             <div>
               <label 
                 htmlFor="name" 
@@ -447,12 +550,16 @@ const App = () => {
                 Format: 10 digits (e.g., 1234567890)
               </p>
             </div>
-
+            {renderRobotVerification()}
             <button
               type="submit"
-              className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300"
+              disabled={
+                !formData.photo || 
+                !robotVerification.isVerified
+              }
+              className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300 disabled:bg-gray-700 disabled:text-purple-400 disabled:cursor-not-allowed"
             >
-             Submit Magical Christmas Wish
+              Submit Magical Christmas Wish
             </button>
           </form>
         );
@@ -637,7 +744,7 @@ const App = () => {
       <Snowfall snowflakeCount={200} />
 
       <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
-        <h2 className="text-3xl font-extrabold mb-6 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
+        <h2 className="text-3xl font-extrabold mb-6 mt-4 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
           Let&apos;s create magic this Christmas
         </h2>
         
