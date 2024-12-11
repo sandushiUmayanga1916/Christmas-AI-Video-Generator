@@ -740,8 +740,9 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4 relative">
-      <Snowfall snowflakeCount={200} />
+   <div className="min-h-screen bg-custom-bg bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 relative">
+ 
+      <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
       <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
         <h2 className="text-3xl font-extrabold mb-6 mt-4 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
