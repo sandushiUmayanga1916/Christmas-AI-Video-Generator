@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from "react";
 import Snowfall from "react-snowfall";
-import { Camera, Upload, Trash2, Info, ArrowLeft, CheckCircle2, Circle } from "lucide-react";
+import { Camera, Upload, Trash2, Info, ArrowLeft, CheckCircle2, Circle, Play} from "lucide-react";
 
 
 const App = () => {
@@ -685,63 +685,61 @@ const App = () => {
           </form>
         );
 
-      case 'success':
-        return (
-          <div className="text-center space-y-6">
-            <div className="bg-green-600/20 border-2 border-green-500 rounded-lg p-6">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-16 w-16 mx-auto mb-4 text-green-500" 
-                viewBox="0 0 20 20" 
-                fill="currentColor"
+        case 'success':
+          return (
+            <div className="text-center space-y-6">
+              <div className="bg-green-600/20 border-2 border-green-500 rounded-lg p-6">
+                <div className="relative mx-auto mb-4 rounded-lg max-h-64 overflow-hidden">
+                  <video 
+                    src="https://example.com/your-christmas-wish-video.mp4" 
+                    alt="Your Christmas Wish Video" 
+                    controls
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50">
+                    <Play className="text-white w-16 h-16" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-green-400 mb-2">
+                  Wish Submitted Successfully!
+                </h3>
+                <p className="text-purple-300">
+                Your magical Christmas wish is on its way! ✨ Keep an eye on your phone for the video link shortly. 🎄📲
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  // Reset entire form
+                  setFormStage('initial');
+                  setInitialFormData({
+                    name: "",
+                    email: "",
+                    phone: "",
+                  });
+                  setFormData({
+                    photo: null,
+                    message: "",
+                    gender: "",
+                    selectedTemplate: "",
+                  });
+                  setPhotoSize(0);
+                  setError("");
+                }}
+                className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300"
               >
-                <path 
-                  fillRule="evenodd" 
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" 
-                  clipRule="evenodd" 
-                />
-              </svg>
-              <h3 className="text-2xl font-bold text-green-400 mb-2">
-                Wish Submitted Successfully!
-              </h3>
-              <p className="text-purple-300">
-                Your magical Christmas wish has been received. 
-                We&apos;ll process it with love and care.
-              </p>
+                Create Another Wish
+              </button>
             </div>
-            <button
-              onClick={() => {
-                // Reset entire form
-                setFormStage('initial');
-                setInitialFormData({
-                  name: "",
-                  email: "",
-                  phone: "",
-                });
-                setFormData({
-                  photo: null,
-                  message: "",
-                  gender: "",
-                  selectedTemplate: "",
-                });
-                setPhotoSize(0);
-                setError("");
-              }}
-              className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300"
-            >
-              Create Another Wish
-            </button>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
+          );
+  
+        default:
+          return null;
+      }
+    };
+  
 
   return (
    <div className="min-h-screen bg-custom-bg bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 relative">
- 
       <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
       <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
