@@ -746,7 +746,7 @@ const App = () => {
       <div className="bg-gray-800 p-8 shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
       <div className="flex justify-center mb-6">
     <img 
-      src="/src/upload/Honor Logo 1.png" 
+      src="/src/upload/logo.png" 
       alt="Logo" 
       className="w-52 object-contain" 
     />
