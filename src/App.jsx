@@ -739,12 +739,21 @@ const App = () => {
   
 
   return (
-   <div className="min-h-screen bg-custom-bg bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center relative">
+
       <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
-      <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
+      <div className="bg-gray-800 p-8 shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
+      <div className="flex justify-center mb-6">
+    <img 
+      src="/src/upload/Honor Logo 1.png" 
+      alt="Logo" 
+      className="w-52 object-contain" 
+    />
+  </div>
+      <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl  w-full max-w-md relative z-10">
         <h2 className="text-3xl font-extrabold mb-6 mt-4 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
-          Let&apos;s create magic this Christmas
+         Bring your wishes to life
         </h2>
         
         {renderFormStage()}
@@ -767,6 +776,7 @@ const App = () => {
             {error}
           </div>
         )}
+      </div>
       </div>
     </div>
   );
