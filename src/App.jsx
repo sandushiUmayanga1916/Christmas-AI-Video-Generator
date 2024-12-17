@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Snowfall from "react-snowfall";
 import { Camera, Upload, Trash2, Info, ArrowLeft, CheckCircle2, Circle, Play} from "lucide-react";
-
+import axios from "axios";
 
 const App = () => {
   const [formStage, setFormStage] = useState('initial');
@@ -24,13 +24,14 @@ const App = () => {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [, setSelectedTemplate] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  const MAX_PHOTO_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_PHOTO_SIZE = 5 * 1024 * 1024; 
   const MAX_MESSAGE_LENGTH = 100;
   const SUPPORTED_FORMATS = [
     'image/jpeg', 
@@ -123,14 +124,12 @@ const App = () => {
       reader.onload = (event) => {
         const img = new Image();
         img.onload = () => {
-          // Create canvas with the same dimensions as the original image
           const canvas = document.createElement('canvas');
           canvas.width = img.width;
           canvas.height = img.height;
           
-          // Draw the image on white background (for formats with transparency)
           const ctx = canvas.getContext('2d');
-          ctx.fillStyle = 'white'; // White background
+          ctx.fillStyle = 'white'; 
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, img.width, img.height);
           
@@ -140,7 +139,7 @@ const App = () => {
               type: 'image/jpeg' 
             });
             resolve(convertedFile);
-          }, 'image/jpeg', 0.92); // 0.92 is a high-quality compression
+          }, 'image/jpeg', 0.92); 
         };
         
         img.onerror = () => reject(new Error("Image loading failed"));
@@ -208,7 +207,6 @@ const App = () => {
       </div>
     );
   };
-
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
@@ -315,6 +313,38 @@ const App = () => {
     }
   };
 
+  const submitToEndpoint = async (formData) => {
+    
+    const completeFormData = {
+      name: initialFormData.name,
+      email: initialFormData.email,
+      phone_number: initialFormData.phone,
+      input_text: formData.message,
+      gender: formData.gender,
+      temp_image_path: formData.selectedTemplate,
+      user_photo_path: formData.photo
+    };
+
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post('http://localhost:3000/submit-wish', completeFormData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Handle successful submission
+      console.log('Submission successful:', response.data);
+      setFormStage('success');
+    } catch (error) {
+      // Handle submission error
+      console.error('Submission error:', error);
+      setError('Failed to submit your wish. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleInitialSubmit = (e) => {
     e.preventDefault();
     if (formData.message.length > MAX_MESSAGE_LENGTH) {
@@ -328,13 +358,8 @@ const App = () => {
     
     setError("");
     
-    console.log("Form submitted", {
-      ...initialFormData,
-      ...formData
-    });
-    
-    // Reset form or show success message
-    setFormStage('success');
+    // Submit to endpoint instead of just logging
+    submitToEndpoint(formData);
   };
 
   const renderPhotoInstructions = () => {
@@ -475,16 +500,16 @@ const App = () => {
       case 'details':
         return (
           <form 
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (robotVerification.isVerified) {
-              handleInitialSubmit(e);
-            } else {
-              setError("Please complete the robot verification.");
-            }
-          }} 
-          className="space-y-6 relative"
-        >
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (robotVerification.isVerified) {
+                handleInitialSubmit(e);
+              } else {
+                setError("Please complete the robot verification.");
+              }
+            }} 
+            className="space-y-6 relative"
+          >
              <button
               type="button"
               onClick={() => setFormStage('initial')}
@@ -555,11 +580,12 @@ const App = () => {
               type="submit"
               disabled={
                 !formData.photo || 
-                !robotVerification.isVerified
+                !robotVerification.isVerified ||
+                isSubmitting
               }
               className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300 disabled:bg-gray-700 disabled:text-purple-400 disabled:cursor-not-allowed"
             >
-              Submit Magical Christmas Wish
+              {isSubmitting ? 'Submitting...' : 'Submit Magical Christmas Wish'}
             </button>
           </form>
         );
@@ -739,7 +765,7 @@ const App = () => {
   
 
   return (
-   <div className="min-h-screen bg-custom-bg bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4 relative">
       <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
       <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
