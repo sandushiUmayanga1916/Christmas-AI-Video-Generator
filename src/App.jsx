@@ -761,38 +761,32 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col relative">
-      
-      {/* Snowfall Background */}
       <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
-      {/* Main Content Wrapper */}
       <div className="flex-grow flex items-center justify-center relative">
-      
-        {/* Left Side Logo */}
+        {/* Left Side Image */}
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-0 hidden md:block">
           <img
             src="/upload/phone1.png"
-            alt="Left Logo"
+            alt="Left Image"
             className="w-80 h-auto object-contain pl-8"
           />
         </div>
 
-        {/* Right Side Logo */}
+        {/* Right Side Image */}
         <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-0 hidden md:block">
           <img
             src="/upload/phone2.png"
-            alt="Right Logo"
+            alt="Right Image"
             className="w-80 h-auto object-contain pr-12"
           />
         </div>
 
-        {/* Main Form Box */}
         <div className="bg-gray-800 p-8 shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
-        <div className="block sm:hidden">
-  <Snowfall snowflakeCount={300} color="#FFFFFF" />
-</div>
-          
-          {/* Top Logo */}
+          <div className="block sm:hidden">
+            <Snowfall snowflakeCount={300} color="#FFFFFF" />
+          </div>
+
           <div className="flex justify-center mb-6">
             <img
               src="/upload/honerlogo.png"
@@ -801,17 +795,13 @@ const App = () => {
             />
           </div>
 
-          {/* Form Content */}
           <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl w-full max-w-md relative z-10">
-
-
             <h2 className="text-3xl font-extrabold mb-6 mt-4 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
               Bring your wishes to life
             </h2>
 
             {renderFormStage()}
 
-            {/* Error Message */}
             {error && (
               <div className="mt-4 bg-red-600/20 border border-red-500 rounded-lg p-3 text-red-300 text-sm flex items-center">
                 <svg
@@ -845,7 +835,6 @@ const App = () => {
       {/* Footer */}
       <footer className="bg-white w-full py-4 px-8">
         <div className="flex justify-between items-center">
-          {/* Left Footer Logo */}
           <div className="w-1/3 flex justify-start">
             <img
               src="/upload/singer.png"
@@ -854,7 +843,6 @@ const App = () => {
             />
           </div>
 
-          {/* Center Footer Text */}
           <div className="w-1/3 flex justify-center">
             <img
               src="/upload/singer.png"
@@ -863,7 +851,6 @@ const App = () => {
             />
           </div>
 
-          {/* Right Footer Logo */}
           <div className="w-1/3 flex justify-end">
             <img
               src="/upload/singer.png"
