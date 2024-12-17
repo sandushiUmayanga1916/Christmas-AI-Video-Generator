@@ -771,7 +771,7 @@ const App = () => {
         {/* Left Side Logo */}
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-0 hidden md:block">
           <img
-            src="/public/upload/phone1.png"
+            src="/upload/phone1.png"
             alt="Left Logo"
             className="w-80 h-auto object-contain pl-8"
           />
@@ -780,7 +780,7 @@ const App = () => {
         {/* Right Side Logo */}
         <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-0 hidden md:block">
           <img
-            src="/public/upload/phone2.png"
+            src="/upload/phone2.png"
             alt="Right Logo"
             className="w-80 h-auto object-contain pr-12"
           />
@@ -795,7 +795,7 @@ const App = () => {
           {/* Top Logo */}
           <div className="flex justify-center mb-6">
             <img
-              src="/public/upload/honerlogo.png"
+              src="/upload/honerlogo.png"
               alt="Logo"
               className="w-52 object-contain"
             />
@@ -834,7 +834,7 @@ const App = () => {
           {/* Bottom Logo */}
           <div className="flex justify-center">
             <img
-              src="/public/upload/singerlogo.png"
+              src="/upload/singerlogo.png"
               alt="Logo"
               className="w-56 object-contain my-5"
             />
@@ -848,7 +848,7 @@ const App = () => {
           {/* Left Footer Logo */}
           <div className="w-1/3 flex justify-start">
             <img
-              src="/public/upload/singer.png"
+              src="/upload/singer.png"
               alt="Footer HONOR Logo"
               className="w-28 h-auto object-contain"
             />
@@ -857,7 +857,7 @@ const App = () => {
           {/* Center Footer Text */}
           <div className="w-1/3 flex justify-center">
             <img
-              src="/public/upload/singer.png"
+              src="/upload/singer.png"
               alt="Footer HONOR Logo"
               className="w-28 h-auto object-contain"
             />
@@ -866,7 +866,7 @@ const App = () => {
           {/* Right Footer Logo */}
           <div className="w-1/3 flex justify-end">
             <img
-              src="/public/upload/singer.png"
+              src="/upload/singer.png"
               alt="Footer SINGER Logo"
               className="w-28 h-auto object-contain"
             />
