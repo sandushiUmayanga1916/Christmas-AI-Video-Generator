@@ -22,7 +22,6 @@ const App = () => {
   const [formData, setFormData] = useState({
     photo: null,
     message: "",
-    gender: "",
     selectedTemplate: "",
   });
   const [photoSize, setPhotoSize] = useState(0);
@@ -31,7 +30,6 @@ const App = () => {
   const [cameraStream, setCameraStream] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
-  const [, setSelectedTemplate] = useState("");
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -65,6 +63,8 @@ const App = () => {
       "https://via.placeholder.com/150?text=Female+Template+5",
     ],
   };
+
+  const allTemplates = [...templates.male, ...templates.female];
 
   const [robotVerification, setRobotVerification] = useState({
     challenge: null,
@@ -169,6 +169,7 @@ const App = () => {
       reader.readAsDataURL(file);
     });
   };
+
   useEffect(() => {
     if (formStage === "details") {
       setRobotVerification({
@@ -490,9 +491,6 @@ const App = () => {
     );
   };
 
-  const filteredTemplates = formData.gender ? templates[formData.gender] : [];
-
-  // Render different form stages
   const renderFormStage = () => {
     switch (formStage) {
       case "details":
@@ -618,11 +616,8 @@ const App = () => {
                 {formData.message.length} / {MAX_MESSAGE_LENGTH} characters
               </div>
             </div>
-
             <div>
-              <label className="block text-base font-medium text-purple-300 mb-4">
-                Select Template
-              </label>
+              
               <div className="mt-2 flex space-x-4">
                 <button
                   type="button"
@@ -631,7 +626,7 @@ const App = () => {
                       ...prev,
                       gender: prev.gender === "male" ? "" : "male",
                     }));
-                    setSelectedTemplate("");
+                  
                   }}
                   className={`p-2 rounded-lg transition-all duration-300 ${
                     formData.gender === "male"
@@ -648,7 +643,7 @@ const App = () => {
                       ...prev,
                       gender: prev.gender === "female" ? "" : "female",
                     }));
-                    setSelectedTemplate("");
+                  
                   }}
                   className={`p-2 rounded-lg transition-all duration-300 ${
                     formData.gender === "female"
@@ -661,43 +656,38 @@ const App = () => {
               </div>
             </div>
 
-            {filteredTemplates.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-purple-300">
-                  Choose a Template
-                </label>
-                <div className="mt-2 grid grid-cols-2 gap-4">
-                  {filteredTemplates.map((template, index) => (
-                    <img
-                      key={index}
-                      src={template}
-                      alt={`Template ${index + 1}`}
-                      className={`cursor-pointer border-2 rounded-lg transition-all ${
-                        formData.selectedTemplate === template
-                          ? formData.gender === "male"
-                            ? "border-blue-500 scale-105"
-                            : "border-pink-500 scale-105"
-                          : "border-gray-600"
-                      }`}
-                      onClick={() =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          selectedTemplate: template,
-                        }))
-                      }
-                    />
-                  ))}
-                </div>
+            <div>
+              <label className="block text-base font-medium text-purple-300 mb-4">
+                Choose a Template
+              </label>
+              <div className="mt-2 h-64 overflow-y-auto grid grid-cols-2 gap-4 p-2 bg-gray-700 rounded-lg">
+                {allTemplates.map((template, index) => (
+                  <img
+                    key={index}
+                    src={template}
+                    alt={`Template ${index + 1}`}
+                    className={`cursor-pointer border-2 rounded-lg transition-all object-cover h-40 w-full ${
+                      formData.selectedTemplate === template
+                        ? "border-purple-500 scale-105"
+                        : "border-gray-600"
+                    }`}
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        selectedTemplate: template,
+                      }))
+                    }
+                  />
+                ))}
               </div>
-            )}
+            </div>
 
             <button
               type="submit"
               disabled={
                 !formData.photo ||
                 !formData.message ||
-                !formData.gender ||
-                (filteredTemplates.length > 0 && !formData.selectedTemplate)
+                !formData.selectedTemplate
               }
               className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300 disabled:bg-gray-700 disabled:text-purple-400 disabled:cursor-not-allowed"
             >
@@ -741,7 +731,6 @@ const App = () => {
                 setFormData({
                   photo: null,
                   message: "",
-                  gender: "",
                   selectedTemplate: "",
                 });
                 setPhotoSize(0);
