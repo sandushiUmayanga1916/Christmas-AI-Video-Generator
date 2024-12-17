@@ -331,7 +331,7 @@ const App = () => {
     }
   };
 
-  const handleInitialSubmit = (e) => {
+  const handleInitialSubmit = async (e) => {
     e.preventDefault();
     if (formData.message.length > MAX_MESSAGE_LENGTH) {
       setError("Message exceeds maximum length.");
@@ -341,16 +341,40 @@ const App = () => {
       setError("Photo size exceeds 5MB.");
       return;
     }
-
+  
     setError("");
+  
+    try {
+      const response = await fetch('http://localhost:3000/submit-wish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: initialFormData.name,
+          email: initialFormData.email,
+          phone_number: initialFormData.phone,
+          input_text: formData.message,
+          gender: formData.gender,
+          temp_image_path: formData.selectedTemplate,
+          user_photo_path: formData.photo
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Submission failed');
+      }
+  
+      const data = await response.json();
+      console.log('Wish submitted successfully:', data);
+  
 
-    console.log("Form submitted", {
-      ...initialFormData,
-      ...formData,
-    });
-
-    // Reset form or show success message
-    setFormStage("success");
+      setFormStage("success");
+    } catch (error) {
+      console.error('Submission error:', error);
+      setError(error.message);
+    }
   };
 
   const renderPhotoInstructions = () => {
@@ -721,7 +745,7 @@ const App = () => {
             </div>
             <button
               onClick={() => {
-                // Reset entire form
+
                 setFormStage("initial");
                 setInitialFormData({
                   name: "",
