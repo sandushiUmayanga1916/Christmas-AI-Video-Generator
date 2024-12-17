@@ -1,11 +1,19 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from "react";
 import Snowfall from "react-snowfall";
-import { Camera, Upload, Trash2, Info, ArrowLeft, CheckCircle2, Circle, Play} from "lucide-react";
-
+import {
+  Camera,
+  Upload,
+  Trash2,
+  Info,
+  ArrowLeft,
+  CheckCircle2,
+  Circle,
+  Play,
+} from "lucide-react";
 
 const App = () => {
-  const [formStage, setFormStage] = useState('initial');
+  const [formStage, setFormStage] = useState("initial");
   const [initialFormData, setInitialFormData] = useState({
     name: "",
     email: "",
@@ -25,7 +33,6 @@ const App = () => {
   const [showInstructions, setShowInstructions] = useState(false);
   const [, setSelectedTemplate] = useState("");
 
-
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -33,26 +40,26 @@ const App = () => {
   const MAX_PHOTO_SIZE = 5 * 1024 * 1024; // 5MB
   const MAX_MESSAGE_LENGTH = 100;
   const SUPPORTED_FORMATS = [
-    'image/jpeg', 
-    'image/png', 
-    'image/gif', 
-    'image/webp', 
-    'image/bmp', 
-    'image/tiff',
-    'image/heic',
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+    "image/bmp",
+    "image/tiff",
+    "image/heic",
   ];
 
   const templates = {
     male: [
-      "https://via.placeholder.com/150?text=Male+Template+1",
-      "https://via.placeholder.com/150?text=Male+Template+2",
-      "https://via.placeholder.com/150?text=Male+Template+3",
-      "https://via.placeholder.com/150?text=Male+Template+4",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-1.jpg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-2.jpg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-3.jpg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-4.jpg",
       "https://via.placeholder.com/150?text=Male+Template+5",
     ],
     female: [
-      "https://via.placeholder.com/150?text=Female+Template+1",
-      "https://via.placeholder.com/150?text=Female+Template+2",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/female-1.jpg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/female-2.jpg",
       "https://via.placeholder.com/150?text=Female+Template+3",
       "https://via.placeholder.com/150?text=Female+Template+4",
       "https://via.placeholder.com/150?text=Female+Template+5",
@@ -62,57 +69,64 @@ const App = () => {
   const [robotVerification, setRobotVerification] = useState({
     challenge: null,
     userResponse: null,
-    isVerified: false
+    isVerified: false,
   });
 
   // Robot verification challenge generation
   const generateRobotChallenge = () => {
-    const operators = ['+', '-', '*'];
+    const operators = ["+", "-", "*"];
     const num1 = Math.floor(Math.random() * 10) + 1;
     const num2 = Math.floor(Math.random() * 10) + 1;
     const operator = operators[Math.floor(Math.random() * operators.length)];
-    
+
     let correctAnswer;
     switch (operator) {
-      case '+': correctAnswer = num1 + num2; break;
-      case '-': correctAnswer = num1 - num2; break;
-      case '*': correctAnswer = num1 * num2; break;
-      default: correctAnswer = num1 + num2;
+      case "+":
+        correctAnswer = num1 + num2;
+        break;
+      case "-":
+        correctAnswer = num1 - num2;
+        break;
+      case "*":
+        correctAnswer = num1 * num2;
+        break;
+      default:
+        correctAnswer = num1 + num2;
     }
 
     return {
       question: `${num1} ${operator} ${num2} = ?`,
-      correctAnswer: correctAnswer
+      correctAnswer: correctAnswer,
     };
   };
 
   const handleInitialChange = (e) => {
-    setInitialFormData({ 
-      ...initialFormData, 
-      [e.target.name]: e.target.value 
+    setInitialFormData({
+      ...initialFormData,
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleFinalSubmit = (e) => {
     e.preventDefault();
-    setFormStage('details');
+    setFormStage("details");
   };
 
   const handleDetailsChange = (e) => {
-    setFormData({ 
-      ...formData, 
-      [e.target.name]: e.target.value 
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
   };
 
   const resetPhotoState = () => {
-    setFormData(prev => ({ ...prev, photo: null }));
+    setFormData((prev) => ({ ...prev, photo: null }));
     setPhotoSize(0);
     setUploadMode(null);
     setIsCameraReady(false);
-    
+
     if (cameraStream) {
-      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream.getTracks().forEach((track) => track.stop());
       setCameraStream(null);
     }
   };
@@ -124,50 +138,54 @@ const App = () => {
         const img = new Image();
         img.onload = () => {
           // Create canvas with the same dimensions as the original image
-          const canvas = document.createElement('canvas');
+          const canvas = document.createElement("canvas");
           canvas.width = img.width;
           canvas.height = img.height;
-          
+
           // Draw the image on white background (for formats with transparency)
-          const ctx = canvas.getContext('2d');
-          ctx.fillStyle = 'white'; // White background
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "white"; // White background
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, img.width, img.height);
-          
+
           // Convert to JPEG with high quality
-          canvas.toBlob((blob) => {
-            const convertedFile = new File([blob], 'converted.jpg', { 
-              type: 'image/jpeg' 
-            });
-            resolve(convertedFile);
-          }, 'image/jpeg', 0.92); // 0.92 is a high-quality compression
+          canvas.toBlob(
+            (blob) => {
+              const convertedFile = new File([blob], "converted.jpg", {
+                type: "image/jpeg",
+              });
+              resolve(convertedFile);
+            },
+            "image/jpeg",
+            0.92
+          ); // 0.92 is a high-quality compression
         };
-        
+
         img.onerror = () => reject(new Error("Image loading failed"));
         img.src = event.target.result;
       };
-      
+
       reader.onerror = () => reject(new Error("File reading failed"));
       reader.readAsDataURL(file);
     });
   };
   useEffect(() => {
-    if (formStage === 'details') {
+    if (formStage === "details") {
       setRobotVerification({
         challenge: generateRobotChallenge(),
         userResponse: null,
-        isVerified: false
+        isVerified: false,
       });
     }
   }, [formStage]);
 
   const handleRobotVerificationChange = (e) => {
     const userAnswer = parseInt(e.target.value);
-    
-    setRobotVerification(prev => ({
+
+    setRobotVerification((prev) => ({
       ...prev,
       userResponse: userAnswer,
-      isVerified: userAnswer === prev.challenge.correctAnswer
+      isVerified: userAnswer === prev.challenge.correctAnswer,
     }));
   };
 
@@ -190,25 +208,23 @@ const App = () => {
               </div>
               <input
                 type="number"
-                value={robotVerification.userResponse || ''}
+                value={robotVerification.userResponse || ""}
                 onChange={handleRobotVerificationChange}
                 className="w-24 p-2 rounded-lg bg-gray-800 text-purple-200 border-2 border-transparent focus:border-purple-500"
                 placeholder="Your answer"
               />
-              {robotVerification.userResponse !== null && (
-                robotVerification.isVerified ? (
+              {robotVerification.userResponse !== null &&
+                (robotVerification.isVerified ? (
                   <CheckCircle2 className="ml-2 text-green-500" />
                 ) : (
                   <Circle className="ml-2 text-red-500" />
-                )
-              )}
+                ))}
             </div>
           </div>
         </div>
       </div>
     );
   };
-
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
@@ -231,29 +247,28 @@ const App = () => {
       let processedFormat;
 
       // If not already JPEG, convert
-      if (file.type !== 'image/jpeg') {
+      if (file.type !== "image/jpeg") {
         processedFile = await convertToJpeg(file);
-        processedFormat = 'JPEG';
+        processedFormat = "JPEG";
         setError(`Converted to JPEG format automatically`);
       } else {
         processedFile = file;
-        processedFormat = 'JPEG';
+        processedFormat = "JPEG";
       }
 
       // Read the processed file
       const reader = new FileReader();
       reader.onload = (event) => {
-        setFormData(prev => ({ 
-          ...prev, 
+        setFormData((prev) => ({
+          ...prev,
           photo: event.target.result,
-          photoFormat: processedFormat
+          photoFormat: processedFormat,
         }));
         setPhotoSize(processedFile.size);
-        setUploadMode('upload');
+        setUploadMode("upload");
         setError("");
       };
       reader.readAsDataURL(processedFile);
-
     } catch (error) {
       console.error("Image processing error:", error);
       setError("Failed to process image. Please try another file.");
@@ -276,14 +291,14 @@ const App = () => {
     const photoDataUrl = canvas.toDataURL("image/jpeg", 0.92);
 
     if (cameraStream) {
-      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream.getTracks().forEach((track) => track.stop());
       setCameraStream(null);
     }
 
-    setFormData(prev => ({ 
-      ...prev, 
+    setFormData((prev) => ({
+      ...prev,
       photo: photoDataUrl,
-      photoFormat: 'JPEG'
+      photoFormat: "JPEG",
     }));
     setPhotoSize(photoDataUrl.length);
     setIsCameraReady(false);
@@ -295,8 +310,8 @@ const App = () => {
         video: {
           width: { ideal: 1280 },
           height: { ideal: 720 },
-          facingMode: "user"
-        }
+          facingMode: "user",
+        },
       });
 
       if (videoRef.current) {
@@ -305,7 +320,7 @@ const App = () => {
       }
 
       setCameraStream(stream);
-      setUploadMode('camera');
+      setUploadMode("camera");
       setIsCameraReady(true);
       setError("");
     } catch (err) {
@@ -325,16 +340,16 @@ const App = () => {
       setError("Photo size exceeds 5MB.");
       return;
     }
-    
+
     setError("");
-    
+
     console.log("Form submitted", {
       ...initialFormData,
-      ...formData
+      ...formData,
     });
-    
+
     // Reset form or show success message
-    setFormStage('success');
+    setFormStage("success");
   };
 
   const renderPhotoInstructions = () => {
@@ -348,10 +363,18 @@ const App = () => {
         <ul className="list-disc list-inside space-y-2">
           <li>Maximum file size: 5MB</li>
           <li>Avoid blurry or heavily filtered images</li>
-          <li>Close-up shots: Different facial expressions (smiling, neutral, serious), various angles (front, side, tilted)</li>
-          <li>Full-body shots: Variety of outfits, different poses (standing, sitting)</li>
+          <li>
+            Close-up shots: Different facial expressions (smiling, neutral,
+            serious), various angles (front, side, tilted)
+          </li>
+          <li>
+            Full-body shots: Variety of outfits, different poses (standing,
+            sitting)
+          </li>
           <li>High-resolution: Ensure good lighting and focus</li>
-          <li>Current appearance: Represent your current style, hair, and makeup</li>
+          <li>
+            Current appearance: Represent your current style, hair, and makeup
+          </li>
         </ul>
         <div className="mt-3 text-center">
           <button
@@ -380,7 +403,7 @@ const App = () => {
               <input
                 type="file"
                 ref={fileInputRef}
-                accept={SUPPORTED_FORMATS.join(',')}
+                accept={SUPPORTED_FORMATS.join(",")}
                 onChange={handleFileUpload}
                 className="hidden"
               />
@@ -409,33 +432,33 @@ const App = () => {
 
     return (
       <div className="relative">
-      <img
-        src={formData.photo}
-        alt="Uploaded"
-        className="w-full h-64 object-cover rounded-lg"
-      />
-      <div className="absolute top-2 right-2 flex space-x-2">
-        <button
-          onClick={resetPhotoState}
-          className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-all"
-        >
-          <Trash2 size={16} className="text-white" />
-        </button>
+        <img
+          src={formData.photo}
+          alt="Uploaded"
+          className="w-full h-64 object-cover rounded-lg"
+        />
+        <div className="absolute top-2 right-2 flex space-x-2">
+          <button
+            onClick={resetPhotoState}
+            className="bg-red-600 p-2 rounded-full hover:bg-red-700 transition-all"
+          >
+            <Trash2 size={16} className="text-white" />
+          </button>
+        </div>
+        <div className="flex justify-between mt-2">
+          <p className="text-sm text-purple-400">
+            Size: {(photoSize / (1024 * 1024)).toFixed(2)} MB
+          </p>
+          <p className="text-sm text-purple-400">
+            Format: {formData.photoFormat}
+          </p>
+        </div>
       </div>
-      <div className="flex justify-between mt-2">
-        <p className="text-sm text-purple-400">
-          Size: {(photoSize / (1024 * 1024)).toFixed(2)} MB
-        </p>
-        <p className="text-sm text-purple-400">
-          Format: {formData.photoFormat}
-        </p>
-      </div>
-    </div>
     );
   };
 
   const renderCameraMode = () => {
-    if (uploadMode !== 'camera' || !isCameraReady) return null;
+    if (uploadMode !== "camera" || !isCameraReady) return null;
 
     return (
       <div className="mt-4">
@@ -472,29 +495,29 @@ const App = () => {
   // Render different form stages
   const renderFormStage = () => {
     switch (formStage) {
-      case 'details':
+      case "details":
         return (
-          <form 
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (robotVerification.isVerified) {
-              handleInitialSubmit(e);
-            } else {
-              setError("Please complete the robot verification.");
-            }
-          }} 
-          className="space-y-6 relative"
-        >
-             <button
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (robotVerification.isVerified) {
+                handleInitialSubmit(e);
+              } else {
+                setError("Please complete the robot verification.");
+              }
+            }}
+            className="space-y-6 relative"
+          >
+            <button
               type="button"
-              onClick={() => setFormStage('initial')}
+              onClick={() => setFormStage("initial")}
               className="absolute -top-36 -left-7 flex items-center text-violet-400 hover:text-purple-300 m-6 font-bold "
             >
               <ArrowLeft className="mr-2" />
             </button>
             <div>
-              <label 
-                htmlFor="name" 
+              <label
+                htmlFor="name"
                 className="block text-base font-medium text-purple-300"
               >
                 Name
@@ -511,8 +534,8 @@ const App = () => {
             </div>
 
             <div>
-              <label 
-                htmlFor="email" 
+              <label
+                htmlFor="email"
                 className="block text-base font-medium text-purple-300"
               >
                 Email
@@ -529,8 +552,8 @@ const App = () => {
             </div>
 
             <div>
-              <label 
-                htmlFor="phone" 
+              <label
+                htmlFor="phone"
                 className="block text-base font-medium text-purple-300"
               >
                 Phone Number
@@ -553,10 +576,7 @@ const App = () => {
             {renderRobotVerification()}
             <button
               type="submit"
-              disabled={
-                !formData.photo || 
-                !robotVerification.isVerified
-              }
+              disabled={!formData.photo || !robotVerification.isVerified}
               className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300 disabled:bg-gray-700 disabled:text-purple-400 disabled:cursor-not-allowed"
             >
               Submit Magical Christmas Wish
@@ -564,21 +584,21 @@ const App = () => {
           </form>
         );
 
-      case 'initial':
+      case "initial":
         return (
           <form onSubmit={handleFinalSubmit} className="space-y-6">
             <div className=" border-dashed border-2 border-purple-600 rounded-2xl p-4">
               <label className="block text-base font-medium text-purple-300 mb-4">
                 Upload Photo
               </label>
-              
+
               {renderPhotoUpload()}
               {renderCameraMode()}
             </div>
 
             <div>
-              <label  
-                htmlFor="message" 
+              <label
+                htmlFor="message"
                 className="block text-base font-medium text-purple-300 mb-4"
               >
                 Christmas Message
@@ -600,47 +620,46 @@ const App = () => {
             </div>
 
             <div>
-            <label className="block text-base font-medium text-purple-300 mb-4">
-              Select Template
-            </label>
-            <div className="mt-2 flex space-x-4">
-              <button
-                type="button"
-                onClick={() => {
-                  setFormData(prev => ({
-                    ...prev,
-                    gender: prev.gender === "male" ? "" : "male"
-                  }));
-                  setSelectedTemplate("");
-                }}
-                className={`p-2 rounded-lg transition-all duration-300 ${
-                  formData.gender === "male"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-700 text-purple-300 hover:bg-gray-600"
-                }`}
-              >
-                Male
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setFormData(prev => ({
-                    ...prev,
-                    gender: prev.gender === "female" ? "" : "female"
-                  }));
-                  setSelectedTemplate("");
-                }}
-                className={`p-2 rounded-lg transition-all duration-300 ${
-                  formData.gender === "female"
-                    ? "bg-pink-500 text-white"
-                    : "bg-gray-700 text-purple-300 hover:bg-gray-600"
-                }`}
-              >
-                Female
-              </button>
+              <label className="block text-base font-medium text-purple-300 mb-4">
+                Select Template
+              </label>
+              <div className="mt-2 flex space-x-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      gender: prev.gender === "male" ? "" : "male",
+                    }));
+                    setSelectedTemplate("");
+                  }}
+                  className={`p-2 rounded-lg transition-all duration-300 ${
+                    formData.gender === "male"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-700 text-purple-300 hover:bg-gray-600"
+                  }`}
+                >
+                  Male
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      gender: prev.gender === "female" ? "" : "female",
+                    }));
+                    setSelectedTemplate("");
+                  }}
+                  className={`p-2 rounded-lg transition-all duration-300 ${
+                    formData.gender === "female"
+                      ? "bg-pink-500 text-white"
+                      : "bg-gray-700 text-purple-300 hover:bg-gray-600"
+                  }`}
+                >
+                  Female
+                </button>
+              </div>
             </div>
-          </div>
-
 
             {filteredTemplates.length > 0 && (
               <div>
@@ -660,10 +679,12 @@ const App = () => {
                             : "border-pink-500 scale-105"
                           : "border-gray-600"
                       }`}
-                      onClick={() => setFormData(prev => ({ 
-                        ...prev, 
-                        selectedTemplate: template 
-                      }))}
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          selectedTemplate: template,
+                        }))
+                      }
                     />
                   ))}
                 </div>
@@ -685,99 +706,173 @@ const App = () => {
           </form>
         );
 
-        case 'success':
-          return (
-            <div className="text-center space-y-6">
-              <div className="bg-green-600/20 border-2 border-green-500 rounded-lg p-6">
-                <div className="relative mx-auto mb-4 rounded-lg max-h-64 overflow-hidden">
-                  <video 
-                    src="https://example.com/your-christmas-wish-video.mp4" 
-                    alt="Your Christmas Wish Video" 
-                    controls
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50">
-                    <Play className="text-white w-16 h-16" />
-                  </div>
+      case "success":
+        return (
+          <div className="text-center space-y-6">
+            <div className="bg-green-600/20 border-2 border-green-500 rounded-lg p-6">
+              <div className="relative mx-auto mb-4 rounded-lg max-h-64 overflow-hidden">
+                <video
+                  src="https://example.com/your-christmas-wish-video.mp4"
+                  alt="Your Christmas Wish Video"
+                  controls
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50">
+                  <Play className="text-white w-16 h-16" />
                 </div>
-                <h3 className="text-2xl font-bold text-green-400 mb-2">
-                  Wish Submitted Successfully!
-                </h3>
-                <p className="text-purple-300">
-                Your magical Christmas wish is on its way! ✨ Keep an eye on your phone for the video link shortly. 🎄📲
-                </p>
               </div>
-              <button
-                onClick={() => {
-                  // Reset entire form
-                  setFormStage('initial');
-                  setInitialFormData({
-                    name: "",
-                    email: "",
-                    phone: "",
-                  });
-                  setFormData({
-                    photo: null,
-                    message: "",
-                    gender: "",
-                    selectedTemplate: "",
-                  });
-                  setPhotoSize(0);
-                  setError("");
-                }}
-                className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300"
-              >
-                Create Another Wish
-              </button>
+              <h3 className="text-2xl font-bold text-green-400 mb-2">
+                Wish Submitted Successfully!
+              </h3>
+              <p className="text-purple-300">
+                Your magical Christmas wish is on its way! ✨ Keep an eye on
+                your phone for the video link shortly. 🎄📲
+              </p>
             </div>
-          );
-  
-        default:
-          return null;
-      }
-    };
-  
+            <button
+              onClick={() => {
+                // Reset entire form
+                setFormStage("initial");
+                setInitialFormData({
+                  name: "",
+                  email: "",
+                  phone: "",
+                });
+                setFormData({
+                  photo: null,
+                  message: "",
+                  gender: "",
+                  selectedTemplate: "",
+                });
+                setPhotoSize(0);
+                setError("");
+              }}
+              className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300"
+            >
+              Create Another Wish
+            </button>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center relative">
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col relative">
+      
+      {/* Snowfall Background */}
       <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
-      <div className="bg-gray-800 p-8 shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
-      <div className="flex justify-center mb-6">
-    <img 
-      src="/src/upload/Honor Logo 1.png" 
-      alt="Logo" 
-      className="w-52 object-contain" 
-    />
-  </div>
-      <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl  w-full max-w-md relative z-10">
-        <h2 className="text-3xl font-extrabold mb-6 mt-4 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
-         Bring your wishes to life
-        </h2>
-        
-        {renderFormStage()}
+      {/* Main Content Wrapper */}
+      <div className="flex-grow flex items-center justify-center relative">
+      
+        {/* Left Side Logo */}
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-0 hidden md:block">
+          <img
+            src="/public/upload/phone1.png"
+            alt="Left Logo"
+            className="w-80 h-auto object-contain pl-8"
+          />
+        </div>
 
-        {/* Error Message Display */}
-        {error && (
-          <div className="mt-4 bg-red-600/20 border border-red-500 rounded-lg p-3 text-red-300 text-sm flex items-center">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 mr-2" 
-              viewBox="0 0 20 20" 
-              fill="currentColor"
-            >
-              <path 
-                fillRule="evenodd" 
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" 
-                clipRule="evenodd" 
-              />
-            </svg>
-            {error}
+        {/* Right Side Logo */}
+        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-0 hidden md:block">
+          <img
+            src="/public/upload/phone2.png"
+            alt="Right Logo"
+            className="w-80 h-auto object-contain pr-12"
+          />
+        </div>
+
+        {/* Main Form Box */}
+        <div className="bg-gray-800 p-8 shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
+        <div className="block sm:hidden">
+  <Snowfall snowflakeCount={300} color="#FFFFFF" />
+</div>
+          
+          {/* Top Logo */}
+          <div className="flex justify-center mb-6">
+            <img
+              src="/public/upload/honerlogo.png"
+              alt="Logo"
+              className="w-52 object-contain"
+            />
           </div>
-        )}
+
+          {/* Form Content */}
+          <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl w-full max-w-md relative z-10">
+
+
+            <h2 className="text-3xl font-extrabold mb-6 mt-4 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
+              Bring your wishes to life
+            </h2>
+
+            {renderFormStage()}
+
+            {/* Error Message */}
+            {error && (
+              <div className="mt-4 bg-red-600/20 border border-red-500 rounded-lg p-3 text-red-300 text-sm flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {error}
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Logo */}
+          <div className="flex justify-center">
+            <img
+              src="/public/upload/singerlogo.png"
+              alt="Logo"
+              className="w-56 object-contain my-5"
+            />
+          </div>
+        </div>
       </div>
-      </div>
+
+      {/* Footer */}
+      <footer className="bg-white w-full py-4 px-8">
+        <div className="flex justify-between items-center">
+          {/* Left Footer Logo */}
+          <div className="w-1/3 flex justify-start">
+            <img
+              src="/public/upload/singer.png"
+              alt="Footer HONOR Logo"
+              className="w-28 h-auto object-contain"
+            />
+          </div>
+
+          {/* Center Footer Text */}
+          <div className="w-1/3 flex justify-center">
+            <img
+              src="/public/upload/singer.png"
+              alt="Footer HONOR Logo"
+              className="w-28 h-auto object-contain"
+            />
+          </div>
+
+          {/* Right Footer Logo */}
+          <div className="w-1/3 flex justify-end">
+            <img
+              src="/public/upload/singer.png"
+              alt="Footer SINGER Logo"
+              className="w-28 h-auto object-contain"
+            />
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
