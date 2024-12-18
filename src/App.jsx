@@ -795,7 +795,7 @@ const App = () => {
           />
         </div>
 
-        <div className="bg-gray-800 p-8 shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
+        <div className="bg-gray-800 p-5 shadow-2xl shadow-purple-900/50 w-full max-w-md relative z-10">
           <div className="block sm:hidden">
             <Snowfall snowflakeCount={300} color="#FFFFFF" />
           </div>
@@ -808,7 +808,7 @@ const App = () => {
             />
           </div>
 
-          <div className="bg-gray-800 border-2 border-purple-600 p-8 rounded-2xl w-full max-w-md relative z-10">
+          <div className="bg-gray-800 border-2 border-purple-600 p-5 rounded-2xl w-full max-w-md relative z-10">
             <h2 className="text-3xl font-extrabold mb-6 mt-4 text-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
               Bring your wishes to life
             </h2>
