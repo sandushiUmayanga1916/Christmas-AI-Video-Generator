@@ -418,7 +418,7 @@ const App = () => {
     if (!formData.photo) {
       return (
         <div>
-          <div className="flex space-x-4">
+          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <button
               type="button"
               onClick={() => fileInputRef.current.click()}
