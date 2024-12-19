@@ -345,7 +345,7 @@ const App = () => {
     setError("");
   
     try {
-      const response = await fetch('http://3.109.58.49:5000/gen-video-honor', {
+      const response = await fetch('https://api-christmaswish.enfection.com/gen-video-honor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
