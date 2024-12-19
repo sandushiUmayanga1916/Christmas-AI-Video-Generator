@@ -49,17 +49,17 @@ const App = () => {
 
   const templates = {
     male: [
-      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-1.jpg",
-      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-2.jpg",
-      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-3.jpg",
-      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/male-4.jpg",
-      "https://via.placeholder.com/150?text=Male+Template+5",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/1.jpeg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/2.jpeg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/3.jpeg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/4.jpeg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/5.jpeg",
     ],
     female: [
-      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/female-1.jpg",
-      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/female-2.jpg",
-      "https://via.placeholder.com/150?text=Female+Template+3",
-      "https://via.placeholder.com/150?text=Female+Template+4",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/6.jpeg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/7.jpeg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/8.jpeg",
+      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/9.jpeg",
       "https://via.placeholder.com/150?text=Female+Template+5",
     ],
   };
