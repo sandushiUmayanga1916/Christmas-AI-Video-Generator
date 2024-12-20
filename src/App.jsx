@@ -9,7 +9,6 @@ import {
   ArrowLeft,
   CheckCircle2,
   Circle,
-  Play,
 } from "lucide-react";
 
 const App = () => {
@@ -35,7 +34,7 @@ const App = () => {
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  const MAX_PHOTO_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_PHOTO_SIZE = 5 * 1024 * 1024; 
   const MAX_MESSAGE_LENGTH = 100;
   const SUPPORTED_FORMATS = [
     "image/jpeg",
@@ -609,6 +608,15 @@ const App = () => {
       case "initial":
         return (
           <form onSubmit={handleFinalSubmit} className="space-y-6">
+            <div className="relative mx-auto mb-4 rounded-lg max-h-64 overflow-hidden">
+                <video
+                  src="https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/gen_video/preview-video.mp4"
+                  alt="Your Christmas Wish Video"
+                  controls
+                  className="w-full h-full object-cover"
+                />
+               
+              </div>
             <div className=" border-dashed border-2 border-purple-600 rounded-2xl p-4">
               <label className="block text-base font-medium text-purple-300 mb-4">
                 Upload Photo
@@ -724,17 +732,7 @@ const App = () => {
         return (
           <div className="text-center space-y-6">
             <div className="bg-green-600/20 border-2 border-green-500 rounded-lg p-6">
-              <div className="relative mx-auto mb-4 rounded-lg max-h-64 overflow-hidden">
-                <video
-                  src="https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/gen_video/preview-video.mp4"
-                  alt="Your Christmas Wish Video"
-                  controls
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50">
-                  <Play className="text-white w-16 h-16" />
-                </div>
-              </div>
+              
               <h3 className="text-2xl font-bold text-green-400 mb-2">
                 Wish Submitted Successfully!
               </h3>
