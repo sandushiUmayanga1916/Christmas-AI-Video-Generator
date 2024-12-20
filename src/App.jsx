@@ -726,7 +726,7 @@ const App = () => {
             <div className="bg-green-600/20 border-2 border-green-500 rounded-lg p-6">
               <div className="relative mx-auto mb-4 rounded-lg max-h-64 overflow-hidden">
                 <video
-                  src="https://example.com/your-christmas-wish-video.mp4"
+                  src="https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/gen_video/preview-video.mp4"
                   alt="Your Christmas Wish Video"
                   controls
                   className="w-full h-full object-cover"
