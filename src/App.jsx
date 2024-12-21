@@ -32,7 +32,8 @@ const App = () => {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showTerms, setShowTerms] = useState(true);
+  const [showTerms, setShowTerms] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -264,18 +265,21 @@ const App = () => {
           </div>
 
           <div className="mt-6 flex flex-col sm:flex-row gap-4">
-            <button
-              onClick={() => setShowTerms(false)}
+          <button
+              onClick={handleTermsAccept}
               className="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-all"
             >
               I Accept
             </button>
-            <a
-              href="/"
-              className="flex-1 bg-gray-700 text-purple-300 py-3 rounded-lg hover:bg-gray-600 transition-all text-center"
+            <button
+              onClick={() => {
+                setShowTerms(false);
+                setFormStage("initial");
+              }}
+              className="flex-1 bg-gray-700 text-purple-300 py-3 rounded-lg hover:bg-gray-600 transition-all"
             >
               Decline
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -319,6 +323,11 @@ const App = () => {
 
   const handleFinalSubmit = (e) => {
     e.preventDefault();
+    setShowTerms(true);
+  };
+  const handleTermsAccept = () => {
+    setShowTerms(false);
+    setTermsAccepted(true);
     setFormStage("details");
   };
 
@@ -731,18 +740,22 @@ const App = () => {
   const renderFormStage = () => {
     switch (formStage) {
       case "details":
+        if (!termsAccepted) {
+          setFormStage("initial");
+          return null;
+        }
         return (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (robotVerification.isVerified) {
-                handleInitialSubmit(e);
-              } else {
-                setError("Please complete the robot verification.");
-              }
-            }}
-            className="space-y-6 relative"
-          >
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (robotVerification.isVerified) {
+                  handleInitialSubmit(e);
+                } else {
+                  setError("Please complete the robot verification.");
+                }
+              }}
+              className="space-y-6 relative"
+            >
             <button
               type="button"
               onClick={() => setFormStage("initial")}
