@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from "react";
 import Snowfall from "react-snowfall";
@@ -383,18 +384,9 @@ const App = () => {
         </h3>
         <ul className="list-disc list-inside space-y-2">
           <li>Maximum file size: 5MB</li>
-          <li>Avoid blurry or heavily filtered images</li>
+          <li> Avoid blurry or heavily filtered images</li>
           <li>
-            Close-up shots: Different facial expressions (smiling, neutral,
-            serious), various angles (front, side, tilted)
-          </li>
-          <li>
-            Full-body shots: Variety of outfits, different poses (standing,
-            sitting)
-          </li>
-          <li>High-resolution: Ensure good lighting and focus</li>
-          <li>
-            Current appearance: Represent your current style, hair, and makeup
+            High-resolution images: Ensure to upload a clear image of your face with good lighting.
           </li>
         </ul>
         <div className="mt-3 text-center">
