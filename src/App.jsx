@@ -53,7 +53,6 @@ const App = () => {
       "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/2.jpeg",
       "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/3.jpeg",
       "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/4.jpeg",
-      "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/5.jpeg",
     ],
     female: [
       "https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/temp_img/6.jpeg",
