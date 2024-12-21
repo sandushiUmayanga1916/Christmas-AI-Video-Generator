@@ -32,12 +32,13 @@ const App = () => {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+   const [showTerms, setShowTerms] = useState(true);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  const MAX_PHOTO_SIZE = 5 * 1024 * 1024; 
+  const MAX_PHOTO_SIZE = 15 * 1024 * 1024; 
   const MAX_MESSAGE_LENGTH = 100;
   const SUPPORTED_FORMATS = [
     "image/jpeg",
@@ -72,6 +73,61 @@ const App = () => {
     userResponse: null,
     isVerified: false,
   });
+
+  
+    // Terms and Conditions Popup
+    const renderTermsPopup = () => {
+      if (!showTerms) return null;
+  
+      return (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-lg p-6 max-w-xl w-full max-h-[80vh] overflow-y-auto relative">
+            <h3 className="text-2xl font-bold text-purple-300 mb-4">Terms and Conditions</h3>
+            
+            <div className="space-y-4 text-purple-200">
+              <p>Welcome to the HONOR Christmas Wish creator! By using this service, you agree to the following terms:</p>
+              
+              <div className="space-y-2">
+                <h4 className="font-semibold text-purple-300">1. Photo Submission</h4>
+                <p>• You confirm that you have the right to use and share any photos you upload</p>
+                <p>• Photos must not contain inappropriate or offensive content</p>
+                <p>• Maximum file size is 15MB</p>
+              </div>
+  
+              <div className="space-y-2">
+                <h4 className="font-semibold text-purple-300">2. Personal Information</h4>
+                <p>• Your personal information will be handled according to our privacy policy</p>
+                <p>• We may use your contact details to send you your video</p>
+                <p>• Your data will not be shared with third parties without your consent</p>
+              </div>
+  
+              <div className="space-y-2">
+                <h4 className="font-semibold text-purple-300">3. Content Usage</h4>
+                <p>• HONOR reserves the right to moderate all submitted content</p>
+                <p>• Generated videos may be used for promotional purposes</p>
+                <p>• Offensive or inappropriate messages will be rejected</p>
+              </div>
+            </div>
+  
+            <div className="mt-6 flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => setShowTerms(false)}
+                className="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-all"
+              >
+                I Accept
+              </button>
+              <a 
+                href="/"
+                className="flex-1 bg-gray-700 text-purple-300 py-3 rounded-lg hover:bg-gray-600 transition-all text-center"
+              >
+                Decline
+              </a>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
 
   // Robot verification challenge generation
   const generateRobotChallenge = () => {
@@ -234,7 +290,7 @@ const App = () => {
 
     // Check file size
     if (file.size > MAX_PHOTO_SIZE) {
-      setError("File size must be less than 5MB.");
+      setError("File size must be less than 15MB.");
       return;
     }
 
@@ -339,7 +395,7 @@ const App = () => {
       return;
     }
     if (photoSize > MAX_PHOTO_SIZE) {
-      setError("Photo size exceeds 5MB.");
+      setError("Photo size exceeds 15MB.");
       return;
     }
 
@@ -395,7 +451,7 @@ const App = () => {
           <ul className="space-y-3 text-purple-200">
             <li className="flex items-start">
               <span className="mr-2">•</span>
-              Maximum file size: 5MB
+              Maximum file size: 15MB
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
@@ -787,6 +843,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col relative">
+       {renderTermsPopup()}
       <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
       <div className="flex-grow flex items-center justify-center relative">
