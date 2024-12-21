@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   CheckCircle2,
   Circle,
+  X,
 } from "lucide-react";
 
 const App = () => {
@@ -378,24 +379,39 @@ const App = () => {
     if (!showInstructions) return null;
 
     return (
-      <div className="bg-gray-700 rounded-lg p-4 mt-2 text-sm text-purple-200">
-        <h3 className="font-bold text-purple-300 mb-2 flex items-center">
-          <Info className="mr-2" /> Photo Upload Guidelines
-        </h3>
-        <ul className="list-disc list-inside space-y-2">
-          <li>Maximum file size: 5MB</li>
-          <li> Avoid blurry or heavily filtered images</li>
-          <li>
-            High-resolution images: Ensure to upload a clear image of your face with good lighting.
-          </li>
-        </ul>
-        <div className="mt-3 text-center">
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full relative animate-in fade-in zoom-in duration-200">
           <button
-            type="button"
             onClick={() => setShowInstructions(false)}
-            className="text-purple-400 hover:text-purple-300 underline"
+            className="absolute right-4 top-4 text-purple-400 hover:text-purple-300 transition-colors"
           >
-            Close Instructions
+            <X size={20} />
+          </button>
+          
+          <h3 className="font-bold text-purple-300 mb-4 flex items-center text-lg">
+            <Info className="mr-2" /> Photo Upload Guidelines
+          </h3>
+          
+          <ul className="space-y-3 text-purple-200">
+            <li className="flex items-start">
+              <span className="mr-2">•</span>
+              Maximum file size: 5MB
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2">•</span>
+              Avoid blurry or heavily filtered images
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2">•</span>
+              High-resolution images: Ensure to upload a clear image of your face with good lighting.
+            </li>
+          </ul>
+
+          <button
+            onClick={() => setShowInstructions(false)}
+            className="mt-6 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            Got it!
           </button>
         </div>
       </div>
