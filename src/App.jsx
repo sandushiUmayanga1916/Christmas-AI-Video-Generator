@@ -29,6 +29,7 @@ const App = () => {
   const [cameraStream, setCameraStream] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -340,11 +341,12 @@ const App = () => {
       setError("Photo size exceeds 5MB.");
       return;
     }
-  
+
     setError("");
-  
+    setIsSubmitting(true);
+
     try {
-      const response = await fetch('https://api-christmaswish.enfection.com/gen-video-honor', {
+      await fetch('https://api-christmaswish.enfection.com/gen-video-honor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -359,22 +361,18 @@ const App = () => {
           user_photo_path: formData.photo
         })
       });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Submission failed');
-      }
-  
-      const data = await response.json();
-      console.log('Wish submitted successfully:', data);
-  
 
+      // Proceed to success regardless of response
       setFormStage("success");
     } catch (error) {
       console.error('Submission error:', error);
-      setError(error.message);
+      // Still proceed to success even if there's an error
+      setFormStage("success");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
 
   const renderPhotoInstructions = () => {
     if (!showInstructions) return null;
@@ -597,10 +595,20 @@ const App = () => {
             {renderRobotVerification()}
             <button
               type="submit"
-              disabled={!formData.photo || !robotVerification.isVerified}
+              disabled={!formData.photo || !robotVerification.isVerified || isSubmitting}
               className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300 disabled:bg-gray-700 disabled:text-purple-400 disabled:cursor-not-allowed"
             >
-              Submit Magical Christmas Wish
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Submitting...
+                </span>
+              ) : (
+                "Submit Magical Christmas Wish"
+              )}
             </button>
           </form>
         );
