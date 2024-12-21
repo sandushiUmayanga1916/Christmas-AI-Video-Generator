@@ -32,13 +32,13 @@ const App = () => {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-   const [showTerms, setShowTerms] = useState(true);
+  const [showTerms, setShowTerms] = useState(true);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  const MAX_PHOTO_SIZE = 15 * 1024 * 1024; 
+  const MAX_PHOTO_SIZE = 15 * 1024 * 1024;
   const MAX_MESSAGE_LENGTH = 100;
   const SUPPORTED_FORMATS = [
     "image/jpeg",
@@ -74,60 +74,209 @@ const App = () => {
     isVerified: false,
   });
 
-  
-    // Terms and Conditions Popup
-    const renderTermsPopup = () => {
-      if (!showTerms) return null;
-  
-      return (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg p-6 max-w-xl w-full max-h-[80vh] overflow-y-auto relative">
-            <h3 className="text-2xl font-bold text-purple-300 mb-4">Terms and Conditions</h3>
-            
-            <div className="space-y-4 text-purple-200">
-              <p>Welcome to the HONOR Christmas Wish creator! By using this service, you agree to the following terms:</p>
-              
-              <div className="space-y-2">
-                <h4 className="font-semibold text-purple-300">1. Photo Submission</h4>
-                <p>• You confirm that you have the right to use and share any photos you upload</p>
-                <p>• Photos must not contain inappropriate or offensive content</p>
-                <p>• Maximum file size is 15MB</p>
-              </div>
-  
-              <div className="space-y-2">
-                <h4 className="font-semibold text-purple-300">2. Personal Information</h4>
-                <p>• Your personal information will be handled according to our privacy policy</p>
-                <p>• We may use your contact details to send you your video</p>
-                <p>• Your data will not be shared with third parties without your consent</p>
-              </div>
-  
-              <div className="space-y-2">
-                <h4 className="font-semibold text-purple-300">3. Content Usage</h4>
-                <p>• HONOR reserves the right to moderate all submitted content</p>
-                <p>• Generated videos may be used for promotional purposes</p>
-                <p>• Offensive or inappropriate messages will be rejected</p>
-              </div>
+  // Terms and Conditions Popup
+  const renderTermsPopup = () => {
+    if (!showTerms) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-800 rounded-lg p-6 max-w-xl w-full max-h-[80vh] overflow-y-auto relative">
+          <h3 className="text-2xl font-bold text-purple-300 mb-4">
+            Terms and Conditions
+          </h3>
+
+          <div className="space-y-4 text-purple-200">
+            <p>
+              Welcome to the HONOR Christmas Wish creator! By using this
+              service, you agree to the following terms:
+            </p>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">1. Eligibility </h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span> This campaign is open to all
+                individuals.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span> Participants must comply with
+                all local laws and regulations applicable to their
+                participation.
+              </li>
             </div>
-  
-            <div className="mt-6 flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={() => setShowTerms(false)}
-                className="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-all"
-              >
-                I Accept
-              </button>
-              <a 
-                href="/"
-                className="flex-1 bg-gray-700 text-purple-300 py-3 rounded-lg hover:bg-gray-600 transition-all text-center"
-              >
-                Decline
-              </a>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">2. Platform Use</h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>The platform provided for the
+                Christmas Campaign allows participants to create videos by
+                integrating images into a Santa Claus template, which will then
+                animate and talk.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>The platform is provided &quot;as
+                is,&quot; and we do not guarantee uninterrupted or error-free
+                operation.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">
+                3. Participant Responsibilities
+              </h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Participants are solely
+                responsible for the images and messages they upload and use
+                within the platform.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>By submitting content,
+                participants confirm that they have the legal right to use any
+                images or text provided and that their submissions do not
+                violate copyright, privacy, or other legal rights.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Participants agree to refrain
+                from uploading content that is offensive, defamatory,
+                discriminatory, or otherwise inappropriate.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">
+                4. Intellectual Property
+              </h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>The platform and its templates
+                remain the intellectual property of Singer Sri Lanka PLC.
+                Participants may not reverse-engineer, replicate, or
+                redistribute the template or any part of the platform.
+              </li>
+
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Any content submitted by
+                participants remains their intellectual property. However, by
+                participating, participants grant Honor Device Co., Ltd. and
+                Singer Sri Lanka PLC a non-exclusive, royalty-free, and
+                worldwide license to use, display, and promote the submitted
+                content for purposes related to the Christmas Campaign.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">5. Liability</h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
+                Sri Lanka PLC assume no responsibility for the content submitted
+                by participants or for any consequences resulting from its use
+                or misuse.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
+                Sri Lanka PLC disclaim liability for any technical issues or
+                data loss arising from the use of the platform.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">6. Privacy</h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Participants’ data, including
+                uploaded images and messages, will be handled in accordance with
+                the Privacy Policy of Honor Device Co., Ltd. and Singer Sri
+                Lanka PLC.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
+                Sri Lanka PLC will not share participants’ data with third
+                parties unless required by law or for purposes directly related
+                to the Christmas Campaign.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">
+                7. Disqualification
+              </h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Participants may be disqualified
+                for violating these terms and conditions or engaging in
+                fraudulent or unethical behavior.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
+                Sri Lanka PLC reserve the right to remove any content deemed
+                inappropriate or in violation of these terms without prior
+                notice.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">
+                8. Modification and Termination
+              </h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
+                Sri Lanka PLC reserve the right to modify or terminate the
+                Christmas Campaign at any time without prior notice.
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Changes to the campaign or terms
+                and conditions will be communicated on Honor Device Co., Ltd.
+                and Singer Sri Lanka PLC’s website or platform.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">
+                9. Governing Law
+              </h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>Any disputes arising from this
+                Christmas Campaign will be subject to the exclusive jurisdiction
+                of the courts.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">10. Ownership</h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>The ownership of all rights,
+                titles, and interests in the Christmas Campaign, including all
+                related intellectual property and platform functionalities,
+                belongs exclusively to Honor Device Co., Ltd. and Singer Sri
+                Lanka PLC.
+              </li>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-purple-300">
+                11. Acceptance of Terms
+              </h4>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>By participating in the Christmas
+                Campaign, participants agree to these terms and conditions.
+              </li>
             </div>
           </div>
-        </div>
-      );
-    };
 
+          <div className="mt-6 flex flex-col sm:flex-row gap-4">
+            <button
+              onClick={() => setShowTerms(false)}
+              className="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-all"
+            >
+              I Accept
+            </button>
+            <a
+              href="/"
+              className="flex-1 bg-gray-700 text-purple-300 py-3 rounded-lg hover:bg-gray-600 transition-all text-center"
+            >
+              Decline
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // Robot verification challenge generation
   const generateRobotChallenge = () => {
@@ -403,10 +552,10 @@ const App = () => {
     setIsSubmitting(true);
 
     try {
-      await fetch('https://api-christmaswish.enfection.com/gen-video-honor', {
-        method: 'POST',
+      await fetch("https://api-christmaswish.enfection.com/gen-video-honor", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: initialFormData.name,
@@ -415,21 +564,20 @@ const App = () => {
           input_text: formData.message,
           gender: formData.gender,
           temp_image_path: formData.selectedTemplate,
-          user_photo_path: formData.photo
-        })
+          user_photo_path: formData.photo,
+        }),
       });
 
       // Proceed to success regardless of response
       setFormStage("success");
     } catch (error) {
-      console.error('Submission error:', error);
+      console.error("Submission error:", error);
       // Still proceed to success even if there's an error
       setFormStage("success");
     } finally {
       setIsSubmitting(false);
     }
   };
-
 
   const renderPhotoInstructions = () => {
     if (!showInstructions) return null;
@@ -443,11 +591,11 @@ const App = () => {
           >
             <X size={20} />
           </button>
-          
+
           <h3 className="font-bold text-purple-300 mb-4 flex items-center text-lg">
             <Info className="mr-2" /> Photo Upload Guidelines
           </h3>
-          
+
           <ul className="space-y-3 text-purple-200">
             <li className="flex items-start">
               <span className="mr-2">•</span>
@@ -459,7 +607,8 @@ const App = () => {
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
-              High-resolution images: Ensure to upload a clear image of your face with good lighting.
+              High-resolution images: Ensure to upload a clear image of your
+              face with good lighting.
             </li>
           </ul>
 
@@ -658,14 +807,32 @@ const App = () => {
             {renderRobotVerification()}
             <button
               type="submit"
-              disabled={!formData.photo || !robotVerification.isVerified || isSubmitting}
+              disabled={
+                !formData.photo || !robotVerification.isVerified || isSubmitting
+              }
               className="w-full bg-purple-600 text-white py-2 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300 disabled:bg-gray-700 disabled:text-purple-400 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Submitting...
                 </span>
@@ -680,14 +847,13 @@ const App = () => {
         return (
           <form onSubmit={handleFinalSubmit} className="space-y-6">
             <div className="relative mx-auto mb-4 rounded-lg max-h-64 overflow-hidden">
-                <video
-                  src="https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/gen_video/preview-video.mp4"
-                  alt="Your Christmas Wish Video"
-                  controls
-                  className="w-full h-full object-cover"
-                />
-               
-              </div>
+              <video
+                src="https://honor-ai-video-gen.s3.ap-south-1.amazonaws.com/gen_video/preview-video.mp4"
+                alt="Your Christmas Wish Video"
+                controls
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div className=" border-dashed border-2 border-purple-600 rounded-2xl p-4">
               <label className="block text-base font-medium text-purple-300 mb-4">
                 Upload Photo
@@ -720,7 +886,6 @@ const App = () => {
               </div>
             </div>
             <div>
-              
               <div className="mt-2 flex space-x-4">
                 <button
                   type="button"
@@ -729,7 +894,6 @@ const App = () => {
                       ...prev,
                       gender: prev.gender === "male" ? "" : "male",
                     }));
-                  
                   }}
                   className={`p-2 rounded-lg transition-all duration-300 ${
                     formData.gender === "male"
@@ -746,7 +910,6 @@ const App = () => {
                       ...prev,
                       gender: prev.gender === "female" ? "" : "female",
                     }));
-                  
                   }}
                   className={`p-2 rounded-lg transition-all duration-300 ${
                     formData.gender === "female"
@@ -803,17 +966,17 @@ const App = () => {
         return (
           <div className="text-center space-y-6">
             <div className="bg-green-600/20 border-2 border-green-500 rounded-lg p-6">
-              
               <h3 className="text-2xl font-bold text-green-400 mb-2">
                 Wish Submitted Successfully!
               </h3>
               <p className="text-purple-300">
-              Your magical Christmas wish is on its way! ✨ Keep an eye on your phone, and in about 6 hours, you&apos;ll receive a SMS with the link to your special video. 🎄
+                Your magical Christmas wish is on its way! ✨ Keep an eye on
+                your phone, and in about 6 hours, you&apos;ll receive a SMS with
+                the link to your special video. 🎄
               </p>
             </div>
             <button
               onClick={() => {
-
                 setFormStage("initial");
                 setInitialFormData({
                   name: "",
@@ -842,7 +1005,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col relative">
-       {renderTermsPopup()}
+      {renderTermsPopup()}
       <Snowfall snowflakeCount={300} color="#FFFFFF" />
 
       <div className="flex-grow flex items-center justify-center relative">
