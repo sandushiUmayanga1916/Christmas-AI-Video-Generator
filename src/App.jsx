@@ -109,13 +109,13 @@ const App = () => {
               <li className="flex items-start">
                 <span className="mr-2">•</span>The platform provided for the
                 Christmas Campaign allows participants to create videos by
-                integrating images into a Santa Claus template, which will then
+                integrating images into a Christmas template, which will then
                 animate and talk.
               </li>
               <li className="flex items-start">
-                <span className="mr-2">•</span>The platform is provided &quot;as
-                is,&quot; and we do not guarantee uninterrupted or error-free
-                operation.
+                <span className="mr-2">•</span>The platform is provided
+                &ldquo;as is,&ldquo; and we do not guarantee uninterrupted or
+                error-free operation.
               </li>
             </div>
 
@@ -146,7 +146,7 @@ const App = () => {
                 4. Intellectual Property
               </h4>
               <li className="flex items-start">
-                <span className="mr-2">•</span>The platform and its templates
+                <span className="mr-2">•</span> The platform and its templates
                 remain the intellectual property of Singer Sri Lanka PLC.
                 Participants may not reverse-engineer, replicate, or
                 redistribute the template or any part of the platform.
@@ -155,25 +155,27 @@ const App = () => {
               <li className="flex items-start">
                 <span className="mr-2">•</span>Any content submitted by
                 participants remains their intellectual property. However, by
-                participating, participants grant Honor Device Co., Ltd. and
-                Singer Sri Lanka PLC a non-exclusive, royalty-free, and
-                worldwide license to use, display, and promote the submitted
-                content for purposes related to the Christmas Campaign.
+                participating, participants grant Honor Information Technology
+                Co., Limited and Singer Sri Lanka PLC a non-exclusive,
+                royalty-free, and worldwide license to use, display, and promote
+                the submitted content for purposes related to the Christmas
+                Campaign.
               </li>
             </div>
 
             <div className="space-y-2">
               <h4 className="font-semibold text-purple-300">5. Liability</h4>
               <li className="flex items-start">
-                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
-                Sri Lanka PLC assume no responsibility for the content submitted
-                by participants or for any consequences resulting from its use
-                or misuse.
+                <span className="mr-2">•</span> Honor Information Technology
+                Co., Limited and Singer Sri Lanka PLC assume no responsibility
+                for the content submitted by participants or for any
+                consequences resulting from its use or misuse.
               </li>
               <li className="flex items-start">
-                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
-                Sri Lanka PLC disclaim liability for any technical issues or
-                data loss arising from the use of the platform.
+                <span className="mr-2">•</span>Honor Information Technology Co.,
+                Limited and Singer Sri Lanka PLC disclaim liability for any
+                technical issues or data loss arising from the use of the
+                platform.
               </li>
             </div>
 
@@ -182,14 +184,14 @@ const App = () => {
               <li className="flex items-start">
                 <span className="mr-2">•</span>Participants’ data, including
                 uploaded images and messages, will be handled in accordance with
-                the Privacy Policy of Honor Device Co., Ltd. and Singer Sri
-                Lanka PLC.
+                the Privacy Policy of Honor Information Technology Co., Limited
+                and Singer Sri Lanka PLC.
               </li>
               <li className="flex items-start">
-                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
-                Sri Lanka PLC will not share participants’ data with third
-                parties unless required by law or for purposes directly related
-                to the Christmas Campaign.
+                <span className="mr-2">•</span> Honor Information Technology
+                Co., Limited and Singer Sri Lanka PLC will not share
+                participants’ data with third parties unless required by law or
+                for purposes directly related to the Christmas Campaign.
               </li>
             </div>
 
@@ -203,10 +205,10 @@ const App = () => {
                 fraudulent or unethical behavior.
               </li>
               <li className="flex items-start">
-                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
-                Sri Lanka PLC reserve the right to remove any content deemed
-                inappropriate or in violation of these terms without prior
-                notice.
+                <span className="mr-2">•</span>Honor Information Technology Co.,
+                Limited and Singer Sri Lanka PLC reserve the right to remove any
+                content deemed inappropriate or in violation of these terms
+                without prior notice.
               </li>
             </div>
 
@@ -215,14 +217,16 @@ const App = () => {
                 8. Modification and Termination
               </h4>
               <li className="flex items-start">
-                <span className="mr-2">•</span>Honor Device Co., Ltd. and Singer
-                Sri Lanka PLC reserve the right to modify or terminate the
-                Christmas Campaign at any time without prior notice.
+                <span className="mr-2">•</span>Honor Information Technology Co.,
+                Limited and Singer Sri Lanka PLC reserve the right to modify or
+                terminate the Christmas Campaign at any time without prior
+                notice.
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>Changes to the campaign or terms
-                and conditions will be communicated on Honor Device Co., Ltd.
-                and Singer Sri Lanka PLC’s website or platform.
+                and conditions will be communicated on Honor Information
+                Technology Co., Limited and Singer Sri Lanka PLC’s website or
+                platform.
               </li>
             </div>
 
@@ -243,8 +247,8 @@ const App = () => {
                 <span className="mr-2">•</span>The ownership of all rights,
                 titles, and interests in the Christmas Campaign, including all
                 related intellectual property and platform functionalities,
-                belongs exclusively to Honor Device Co., Ltd. and Singer Sri
-                Lanka PLC.
+                belongs exclusively to Honor Information Technology Co., Limited
+                and Singer Sri Lanka PLC.
               </li>
             </div>
 
