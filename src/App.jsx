@@ -987,10 +987,15 @@ const App = () => {
                 Wish Submitted Successfully!
               </h3>
               <p className="text-purple-300">
-                Your magical Christmas wish is on its way! ✨ Keep an eye on
-                your phone, and in about 6 hours, you&apos;ll receive a SMS with
-                the link to your special video. 🎄
-              </p>
+  Your magical Christmas wish is on its way! ✨ Keep an eye on your phone, and in about 6 hours, you&apos;ll receive an SMS with the link to your special video. 🎄📲
+  <br /><br />
+  To download the video:
+  <br />
+  iPhone: Share → Save to Files
+  <br />
+  Android: Click the link
+</p>
+
             </div>
             <button
               onClick={() => {
